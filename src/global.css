@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@import "nativewind/theme";
+
+/* Puncak brand theme */
+@theme {
+  /* Brand colors */
+  --color-puncak-orange: #F37820;
+  --color-puncak-orange-soft: rgb(243 120 32 / 0.12);
+  --color-puncak-teal: #0D9488;
+  --color-puncak-ink: #0F172A;
+  --color-puncak-slate: #334155;
+  --color-puncak-muted: #64748B;
+  --color-puncak-subtle: #94A3B8;
+  --color-puncak-line: #E2E8F0;
+  --color-puncak-fill: #F8FAFC;
+  --color-puncak-page: #FFFFFF;
+  --color-puncak-danger: #DC2626;
+  --color-puncak-success: #16A34A;
+  --color-puncak-warning: #F59E0B;
+
+  /* Border radius */
+  --radius-puncak-card: 20px;
+  --radius-puncak-control: 20px;
+  --radius-puncak-small: 12px;
+
+  /* Font sizes */
+  --text-2xs: 10px;
+  --text-2xs--line-height: 15px;
+
+  /* Font families */
+  --font-display: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-rounded: "SF Pro Rounded", Inter, ui-sans-serif, system-ui, sans-serif;
+}
