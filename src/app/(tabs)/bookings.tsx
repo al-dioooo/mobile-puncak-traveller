@@ -14,7 +14,7 @@ export default function BookingsScreen() {
 
   if (!auth.isAuthenticated) {
     return (
-      <AppScreen contentClassName="items-center px-6 pb-28 pt-[70px]">
+      <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
         <ScreenTitle title="My Bookings" subtitle="Sign in to view your event bookings." />
         <PrimaryButton icon="person.fill" onPress={() => router.push('/login')}>
           Login
@@ -24,7 +24,7 @@ export default function BookingsScreen() {
   }
 
   return (
-    <AppScreen contentClassName="items-center px-6 pb-28 pt-[70px]">
+    <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
       <ScreenTitle title="My Bookings" subtitle="Current and past event bookings from the API." />
 
       <View className="flex-row gap-1 rounded-full bg-puncak-fill p-1">

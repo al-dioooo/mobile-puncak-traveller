@@ -32,7 +32,7 @@ export default function ExploreScreen() {
   }
 
   return (
-    <AppScreen contentClassName="items-center px-6 pb-28 pt-[70px]">
+    <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
       <ScreenTitle title="Explore Hub" subtitle="Choose a supported Puncak Traveller experience." />
 
       <CategoryCard

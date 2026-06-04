@@ -51,7 +51,7 @@ export default function LoginScreen() {
   }
 
   return (
-    <AppScreen contentClassName="items-center px-5 pb-10 pt-[70px]">
+    <AppScreen contentClassName="items-center px-5 pb-10 pt-4">
       <Surface className="min-h-[753px] p-8">
         <View className="items-center gap-4 pb-6">
           <View className="h-[108px] w-[220px] items-center justify-center">

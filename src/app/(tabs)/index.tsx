@@ -6,7 +6,6 @@ import {
   AppText,
   Icon,
   ImagePanel,
-  MetricPill,
   SectionHeader,
   StateBlock,
   Surface,
@@ -50,7 +49,7 @@ export default function HomeScreen() {
   const recommendedPlaces = places.data?.data ?? [];
 
   return (
-    <AppScreen contentClassName="items-center px-6 pb-28 pt-[70px]">
+    <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
       <Surface className="flex-row items-center gap-4 p-4 shadow-none">
         <ImagePanel
           className="h-12 w-12 min-h-0 rounded-full border-2 border-puncak-orange"
@@ -101,7 +100,7 @@ export default function HomeScreen() {
       </View>
 
       <View className="gap-4">
-        <SectionHeader title="Upcoming Runs" action={{ label: 'See all', href: '/runners' }} />
+        <SectionHeader title="Upcoming Events" action={{ label: 'See all', href: '/events' }} />
         {upcomingEvents.length > 0 ? (
           <HorizontalEventRail events={upcomingEvents} />
         ) : (
@@ -115,17 +114,6 @@ export default function HomeScreen() {
           <EventCard event={landing.data.live_event} />
         </View>
       ) : null}
-
-      <Surface className="flex-row items-center bg-puncak-orange-soft">
-        <View className="min-w-0 flex-1 gap-2">
-          <AppText variant="title">Explore Map</AppText>
-          <AppText variant="bodyMuted">
-            {landing.data?.hero_stats?.[2]?.value ?? 0} mountain regions connected to community
-            routes.
-          </AppText>
-        </View>
-        <MetricPill icon="map">Explore</MetricPill>
-      </Surface>
     </AppScreen>
   );
 }

@@ -5,7 +5,6 @@ import {
   AppScreen,
   AppText,
   FormInput,
-  Icon,
   PrimaryButton,
   StateBlock,
   Surface,
@@ -58,17 +57,8 @@ export default function RegisterScreen() {
   }
 
   return (
-    <AppScreen contentClassName="items-center px-5 pb-10 pt-[70px]">
+    <AppScreen contentClassName="items-center px-5 pb-10 pt-4">
       <Surface className="min-h-[965px] p-0">
-        <View className="min-h-[72px] flex-row items-center border-b border-puncak-line px-4">
-          <Pressable
-            accessibilityRole="button"
-            className="h-10 w-10 items-center justify-center"
-            onPress={() => router.back()}>
-            <Icon name="chevron.left" size={18} />
-          </Pressable>
-        </View>
-
         <View className="gap-8 p-8">
           <View className="items-center gap-2">
             <AppText variant="hero" className="text-center">

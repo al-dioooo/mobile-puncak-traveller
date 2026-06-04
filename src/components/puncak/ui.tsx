@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, router, usePathname } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import type { ComponentProps, ReactNode } from 'react';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import { ActivityIndicator } from 'react-native';
 import { Colors } from '@/constants/theme';
 import { cn } from '@/lib/cn';
 import { assetUrl } from '@/lib/api';
+import { resolveMobileHeader } from '@/lib/route-header';
 import { Image } from '@/tw/image';
 import { Pressable, ScrollView, Text, TextInput, View } from '@/tw';
 
@@ -29,23 +30,55 @@ export function AppScreen({
   contentStyle,
   className,
   contentClassName,
+  headerShown = true,
 }: {
   children: ReactNode;
   contentStyle?: StyleProp<ViewStyle>;
   className?: string;
   contentClassName?: string;
+  headerShown?: boolean;
 }) {
   return (
     <ScrollView
       className={cn('flex-1 bg-puncak-page', className)}
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName={cn(
-        'items-center px-6 pb-28 pt-6',
+        'items-center px-6 pb-28 pt-4',
         contentClassName
       )}
       contentContainerStyle={contentStyle}>
-      <View className="w-full max-w-[402px] gap-6">{children}</View>
+      <View className="w-full max-w-[402px] gap-6">
+        {headerShown ? <MobileHeader /> : null}
+        {children}
+      </View>
     </ScrollView>
+  );
+}
+
+export function MobileHeader() {
+  const pathname = usePathname();
+  const header = resolveMobileHeader(pathname);
+
+  return (
+    <View className="min-h-[52px] flex-row items-center justify-between">
+      {header.showBack ? (
+        <Pressable
+          accessibilityLabel="Go back"
+          accessibilityRole="button"
+          className="h-11 w-11 items-center justify-center rounded-full bg-puncak-fill active:opacity-80"
+          onPress={() => router.back()}>
+          <Icon name="chevron.left" color={Colors.light.text} size={20} />
+        </Pressable>
+      ) : (
+        <View className="h-11 w-11" />
+      )}
+      <View className="min-w-0 flex-1 px-3">
+        <AppText variant="label" className="text-center text-[15px] font-bold text-puncak-ink" numberOfLines={1}>
+          {header.title}
+        </AppText>
+      </View>
+      <View className="h-11 w-11" />
+    </View>
   );
 }
 

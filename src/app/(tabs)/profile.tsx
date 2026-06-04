@@ -21,7 +21,7 @@ export default function ProfileScreen() {
 
   if (!auth.isAuthenticated) {
     return (
-      <AppScreen contentClassName="items-center px-6 pb-28 pt-[70px]">
+      <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
         <ScreenTitle title="Profile" subtitle="Sign in to manage your traveller profile." />
         <PrimaryButton icon="person.fill" onPress={() => router.push('/login')}>
           Login
@@ -51,7 +51,7 @@ export default function ProfileScreen() {
   }
 
   return (
-    <AppScreen contentClassName="items-center px-6 pb-28 pt-[70px]">
+    <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
       <Surface className="items-center">
         <View className="h-24 w-24 items-center justify-center rounded-full bg-puncak-orange-soft">
           <Icon name="person.fill" color={Colors.light.primary} size={38} />

@@ -39,6 +39,7 @@ export default function RootLayout() {
           <Stack.Screen name="runners" options={{ title: 'Puncak Runners', headerShown: false }} />
           <Stack.Screen name="stays" options={{ title: 'Puncak Menginap', headerShown: false }} />
           <Stack.Screen name="camping" options={{ title: 'Puncak In', headerShown: false }} />
+          <Stack.Screen name="events/index" options={{ title: 'All Events', headerShown: false }} />
           <Stack.Screen name="events/[slug]" options={{ title: 'Event Details', headerShown: false }} />
           <Stack.Screen name="places/[id]" options={{ title: 'Place Details', headerShown: false }} />
           <Stack.Screen name="bookings/[reference]" options={{ title: 'Booking Details', headerShown: false }} />
