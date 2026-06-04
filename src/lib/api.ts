@@ -161,11 +161,11 @@ export const api = {
       token,
       body: JSON.stringify(payload),
     }),
-  events: (params?: { q?: string; status?: "all" | "upcoming" | "ongoing" | "completed"; activity?: string; sort?: "date" | "price" | "spots"; per_page?: number; page?: number }) => apiRequest<ApiCollection<Event>>(apiUrl("/events", params).replace(API_BASE_URL, "")),
+  events: (params?: { q?: string; status?: "all" | "upcoming" | "ongoing" | "completed"; activity?: string; community?: string; sort?: "date" | "price" | "spots"; per_page?: number; page?: number }) => apiRequest<ApiCollection<Event>>(apiUrl("/events", params).replace(API_BASE_URL, "")),
   event: (slug: string) => apiRequest<ApiResource<Event>>(`/events/${slug}`),
   places: (params?: { community?: string; per_page?: number; page?: number }) => apiRequest<ApiCollection<Place>>(apiUrl("/places", params).replace(API_BASE_URL, "")),
   place: (id: string | number) => apiRequest<ApiResource<Place>>(`/places/${id}`),
-  communities: () => apiRequest<ApiCollection<Community>>("/communities"),
+  communities: (params?: { per_page?: number; page?: number }) => apiRequest<ApiCollection<Community>>(apiUrl("/communities", params).replace(API_BASE_URL, "")),
   galleries: () => apiRequest<ApiCollection<GalleryItem>>("/galleries"),
   bookings: (token: string, status: string) =>
     apiRequest<ApiCollection<BookingCard>>(`/bookings?status=${encodeURIComponent(status)}`, {

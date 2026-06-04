@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 
 import { BookingItemCard } from '@/components/puncak/cards';
-import { AppScreen, AppText, PrimaryButton, ScreenTitle, StateBlock } from '@/components/puncak/ui';
+import { AppScreen, AppText, PrimaryButton, StateBlock } from '@/components/puncak/ui';
 import { useAuth } from '@/hooks/use-auth';
 import { useBookings } from '@/hooks/use-puncak-api';
 import { Pressable, View } from '@/tw';
@@ -15,7 +15,6 @@ export default function BookingsScreen() {
   if (!auth.isAuthenticated) {
     return (
       <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
-        <ScreenTitle title="My Bookings" subtitle="Sign in to view your event bookings." />
         <PrimaryButton icon="person.fill" onPress={() => router.push('/login')}>
           Login
         </PrimaryButton>
@@ -25,8 +24,6 @@ export default function BookingsScreen() {
 
   return (
     <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
-      <ScreenTitle title="My Bookings" subtitle="Current and past event bookings from the API." />
-
       <View className="flex-row gap-1 rounded-full bg-puncak-fill p-1">
         {(['upcoming', 'past'] as const).map((item) => (
           <Pressable

@@ -1,13 +1,27 @@
 export type MobileHeaderState = {
   title: string;
+  description?: string;
   showBack: boolean;
+  isTab: boolean;
 };
 
-const TAB_ROUTES: Record<string, string> = {
-  '/': 'Home',
-  '/explore': 'Explore',
-  '/bookings': 'My Bookings',
-  '/profile': 'Profile',
+const TAB_ROUTES: Record<string, { title: string; description: string }> = {
+  '/': {
+    title: 'Puncak Traveller',
+    description: 'Curated highland stays, routes, and events from trusted local crews.',
+  },
+  '/explore': {
+    title: 'Explore',
+    description: 'Browse communities, then jump into their places or events.',
+  },
+  '/bookings': {
+    title: 'My Bookings',
+    description: 'Track your current and past Puncak Traveller event bookings.',
+  },
+  '/profile': {
+    title: 'Profile',
+    description: 'Manage your traveller account and event history.',
+  },
 };
 
 const STACK_TITLES: Record<string, string> = {
@@ -34,8 +48,10 @@ export function resolveMobileHeader(pathname: string): MobileHeaderState {
 
   if (tabTitle) {
     return {
-      title: tabTitle,
+      title: tabTitle.title,
+      description: tabTitle.description,
       showBack: false,
+      isTab: true,
     };
   }
 
@@ -43,6 +59,7 @@ export function resolveMobileHeader(pathname: string): MobileHeaderState {
     return {
       title: STACK_TITLES[path],
       showBack: true,
+      isTab: false,
     };
   }
 
@@ -50,6 +67,7 @@ export function resolveMobileHeader(pathname: string): MobileHeaderState {
     return {
       title: 'Event Details',
       showBack: true,
+      isTab: false,
     };
   }
 
@@ -57,6 +75,7 @@ export function resolveMobileHeader(pathname: string): MobileHeaderState {
     return {
       title: 'Place Details',
       showBack: true,
+      isTab: false,
     };
   }
 
@@ -64,11 +83,13 @@ export function resolveMobileHeader(pathname: string): MobileHeaderState {
     return {
       title: 'Booking Details',
       showBack: true,
+      isTab: false,
     };
   }
 
   return {
     title: 'Puncak Traveller',
     showBack: true,
+    isTab: false,
   };
 }

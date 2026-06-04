@@ -1,5 +1,4 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
 
 import {
   AppScreen,
@@ -11,16 +10,13 @@ import {
   Surface,
 } from '@/components/puncak/ui';
 import { useAuth } from '@/hooks/use-auth';
-import { useBooking, useCancelBooking } from '@/hooks/use-puncak-api';
-import { ApiError } from '@/lib/api';
+import { useBooking } from '@/hooks/use-puncak-api';
 import { View } from '@/tw';
 
 export default function BookingDetailScreen() {
   const { reference } = useLocalSearchParams<{ reference: string }>();
   const auth = useAuth();
   const booking = useBooking(reference);
-  const cancel = useCancelBooking(reference);
-  const [cancelError, setCancelError] = useState<string | null>(null);
 
   if (!auth.isAuthenticated) {
     return (
@@ -51,18 +47,6 @@ export default function BookingDetailScreen() {
         />
       </AppScreen>
     );
-  }
-
-  async function cancelBooking() {
-    setCancelError(null);
-
-    try {
-      await cancel.mutateAsync('Cancelled from mobile app.');
-      router.back();
-    } catch (err) {
-      const message = err instanceof ApiError ? err.message : 'Unable to cancel booking.';
-      setCancelError(message);
-    }
   }
 
   return (
@@ -102,17 +86,6 @@ export default function BookingDetailScreen() {
         )}
       </Surface>
 
-      {cancelError ? <StateBlock title="Cancel failed" message={cancelError} /> : null}
-
-      {booking.data.status !== 'cancelled' && booking.data.status !== 'completed' ? (
-        <PrimaryButton
-          variant="danger"
-          icon="xmark.circle"
-          disabled={cancel.isPending}
-          onPress={cancelBooking}>
-          {cancel.isPending ? 'Cancelling...' : 'Cancel Booking'}
-        </PrimaryButton>
-      ) : null}
     </AppScreen>
   );
 }

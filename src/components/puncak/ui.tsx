@@ -59,6 +59,21 @@ export function MobileHeader() {
   const pathname = usePathname();
   const header = resolveMobileHeader(pathname);
 
+  if (header.isTab) {
+    return (
+      <View className="gap-2 pb-2 pt-1">
+        <AppText variant="hero" className="text-[30px] leading-[36px]">
+          {header.title}
+        </AppText>
+        {header.description ? (
+          <AppText variant="bodyMuted" className="max-w-[340px]">
+            {header.description}
+          </AppText>
+        ) : null}
+      </View>
+    );
+  }
+
   return (
     <View className="min-h-[52px] flex-row items-center justify-between">
       {header.showBack ? (

@@ -19,7 +19,6 @@ export default function AccountPreferencesScreen() {
   const update = useUpdateMe();
   const [name, setName] = useState<string | undefined>();
   const [location, setLocation] = useState<string | undefined>();
-  const [crew, setCrew] = useState<string | undefined>();
   const [error, setError] = useState<string | null>(null);
 
   if (!auth.isAuthenticated) {
@@ -62,7 +61,6 @@ export default function AccountPreferencesScreen() {
       await update.mutateAsync({
         name: name ?? profile.name,
         location: location ?? profile.location ?? '',
-        crew: crew ?? profile.crew ?? '',
       });
       router.back();
     } catch (err) {
@@ -88,12 +86,6 @@ export default function AccountPreferencesScreen() {
           icon="mappin"
           value={location ?? profile.location ?? ''}
           onChangeText={setLocation}
-        />
-        <FormInput
-          label="Community Crew"
-          icon="person.3"
-          value={crew ?? profile.crew ?? ''}
-          onChangeText={setCrew}
         />
         {error ? <StateBlock title="Update failed" message={error} /> : null}
         <PrimaryButton icon="checkmark" disabled={update.isPending} onPress={submit}>

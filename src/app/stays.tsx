@@ -1,17 +1,25 @@
+import { useLocalSearchParams } from 'expo-router';
+
 import { PlaceCard } from '@/components/puncak/cards';
 import { AppScreen, ScreenTitle, StateBlock } from '@/components/puncak/ui';
 import { usePlaces } from '@/hooks/use-puncak-api';
 import { View } from '@/tw';
 
 export default function StaysScreen() {
-  const places = usePlaces({ per_page: 30 });
+  const { community } = useLocalSearchParams<{ community?: string }>();
+  const places = usePlaces({ community, per_page: 30 });
+  const isFiltered = Boolean(community);
 
   return (
     <AppScreen contentClassName="items-center px-6 pb-10 pt-6">
       <ScreenTitle
         eyebrow="Puncak Menginap"
-        title="Explore the best places in Bogor"
-        subtitle="Places are read from the backend; booking actions are omitted because the API only books events."
+        title={isFiltered ? 'Community Places' : 'Explore the best places in Bogor'}
+        subtitle={
+          isFiltered
+            ? 'Places filtered by the selected community.'
+            : 'Places are read from the backend; booking actions are omitted because the API only books events.'
+        }
       />
 
       {places.isLoading ? (

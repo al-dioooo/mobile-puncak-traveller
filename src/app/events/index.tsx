@@ -1,3 +1,4 @@
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 
 import { EventCard } from '@/components/puncak/cards';
@@ -8,15 +9,21 @@ import { Pressable, View } from '@/tw';
 type EventStatus = 'upcoming' | 'completed';
 
 export default function AllEventsScreen() {
+  const { community } = useLocalSearchParams<{ community?: string }>();
   const [status, setStatus] = useState<EventStatus>('upcoming');
-  const events = useEvents({ status, sort: 'date', per_page: 30 });
+  const events = useEvents({ community, status, sort: 'date', per_page: 30 });
+  const isFiltered = Boolean(community);
 
   return (
     <AppScreen contentClassName="items-center px-6 pb-10 pt-4">
       <ScreenTitle
         eyebrow="Puncak Events"
-        title="All Events"
-        subtitle="Browse every bookable Puncak Traveller event from the backend."
+        title={isFiltered ? 'Community Events' : 'All Events'}
+        subtitle={
+          isFiltered
+            ? 'Events filtered by the selected community.'
+            : 'Browse every bookable Puncak Traveller event from the backend.'
+        }
       />
 
       <View className="flex-row gap-1 rounded-full bg-puncak-fill p-1">

@@ -49,6 +49,10 @@ export type Community = {
   image_path?: string | null;
   image_url?: string | null;
   member_count?: number | null;
+  places_count?: number;
+  events_count?: number;
+  placesCount?: number;
+  eventsCount?: number;
   children?: Community[];
 };
 

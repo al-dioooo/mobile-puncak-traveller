@@ -6,7 +6,6 @@ import {
   Icon,
   MetricPill,
   PrimaryButton,
-  ScreenTitle,
   StateBlock,
   Surface,
 } from '@/components/puncak/ui';
@@ -22,7 +21,6 @@ export default function ProfileScreen() {
   if (!auth.isAuthenticated) {
     return (
       <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
-        <ScreenTitle title="Profile" subtitle="Sign in to manage your traveller profile." />
         <PrimaryButton icon="person.fill" onPress={() => router.push('/login')}>
           Login
         </PrimaryButton>

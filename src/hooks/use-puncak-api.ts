@@ -14,6 +14,7 @@ export function useEvents(params?: {
   q?: string;
   status?: 'all' | 'upcoming' | 'ongoing' | 'completed';
   activity?: string;
+  community?: string;
   sort?: 'date' | 'price' | 'spots';
   per_page?: number;
 }) {
@@ -35,6 +36,13 @@ export function usePlaces(params?: { community?: string; per_page?: number }) {
   return useQuery({
     queryKey: ['places', params],
     queryFn: async () => await api.places(params),
+  });
+}
+
+export function useCommunities(params?: { per_page?: number; page?: number }) {
+  return useQuery({
+    queryKey: ['communities', params],
+    queryFn: async () => await api.communities(params),
   });
 }
 

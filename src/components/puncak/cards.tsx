@@ -1,10 +1,35 @@
 import { Link } from 'expo-router';
 
 import { Colors } from '@/constants/theme';
-import type { BookingCard, Event, Place } from '@/lib/types';
+import type { BookingCard, Community, Event, Place } from '@/lib/types';
 import { Pressable, ScrollView, View } from '@/tw';
 
 import { AppText, Icon, ImagePanel, MetricPill, PrimaryButton, Surface } from './ui';
+
+const SEEDED_PLACE_PLACEHOLDERS = [
+  '/storage/places/demo/lembah-pinang-villa.jpg',
+  '/storage/places/demo/cibodas-glass-lodge.jpg',
+  '/storage/places/demo/bukit-embun-cabin.jpg',
+  '/storage/places/demo/tea-valley-residence.jpg',
+  '/storage/places/demo/ciloto-family-villa.jpg',
+  '/storage/places/demo/riverside-pine-house.jpg',
+  '/storage/places/demo/meadow-view-cottage.jpg',
+];
+
+function seededIndex(seed: string) {
+  return [...seed].reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) % 9973, 7);
+}
+
+function placeImageUrl(place: Place) {
+  const directImage = place.imageUrl ?? place.image_url;
+
+  if (directImage) {
+    return directImage;
+  }
+
+  const seed = `${place.id}-${place.name}`;
+  return SEEDED_PLACE_PLACEHOLDERS[seededIndex(seed) % SEEDED_PLACE_PLACEHOLDERS.length] ?? place.community?.image_url ?? null;
+}
 
 export function EventCard({ event, compact }: { event: Event; compact?: boolean }) {
   return (
@@ -68,7 +93,7 @@ export function HorizontalEventRail({ events }: { events: Event[] }) {
 }
 
 export function PlaceCard({ place }: { place: Place }) {
-  const imageUrl = place.imageUrl ?? place.image_url ?? place.community?.image_url ?? null;
+  const imageUrl = placeImageUrl(place);
 
   return (
     <Link href={`/places/${place.id}`} asChild>
@@ -105,6 +130,78 @@ export function PlaceCard({ place }: { place: Place }) {
         </Surface>
       </Pressable>
     </Link>
+  );
+}
+
+export function CommunityCard({ community }: { community: Community }) {
+  const placesCount = community.places_count ?? community.placesCount ?? 0;
+  const eventsCount = community.events_count ?? community.eventsCount ?? 0;
+  const canBrowsePlaces = placesCount > 0;
+  const canJoinEvents = eventsCount > 0;
+
+  return (
+    <Surface className="gap-4 p-3">
+      <ImagePanel
+        className="aspect-[16/9] min-h-0 rounded-[16px]"
+        fallbackLabel={community.name}
+        imageAlt={community.name}
+        imageUrl={community.image_url}>
+        <View className="absolute left-3 top-3 flex-row flex-wrap gap-2">
+          <MetricPill icon="house.and.flag" className="bg-white/95">
+            {placesCount} places
+          </MetricPill>
+          <MetricPill icon="calendar" className="bg-white/95">
+            {eventsCount} events
+          </MetricPill>
+        </View>
+      </ImagePanel>
+
+      <View className="gap-3 px-1 pb-1">
+        <View className="gap-1">
+          <AppText variant="title" className="text-[19px] leading-[24px]" numberOfLines={2}>
+            {community.name}
+          </AppText>
+          {community.description ? (
+            <AppText variant="bodyMuted" numberOfLines={3}>
+              {community.description}
+            </AppText>
+          ) : null}
+        </View>
+
+        {canBrowsePlaces || canJoinEvents ? (
+          <View className="flex-row flex-wrap gap-2">
+            {canBrowsePlaces ? (
+              <Link
+                href={{ pathname: '/stays', params: { community: community.slug } }}
+                asChild>
+                <Pressable accessibilityRole="link">
+                  <View className="min-h-[42px] flex-row items-center justify-center gap-2 rounded-puncak-control border border-puncak-line bg-white px-4">
+                    <Icon name="map" color={Colors.light.text} size={15} />
+                    <AppText variant="label" className="font-bold text-puncak-slate">
+                      Browse Places
+                    </AppText>
+                  </View>
+                </Pressable>
+              </Link>
+            ) : null}
+            {canJoinEvents ? (
+              <Link
+                href={{ pathname: '/events', params: { community: community.slug } }}
+                asChild>
+                <Pressable accessibilityRole="link">
+                  <View className="min-h-[42px] flex-row items-center justify-center gap-2 rounded-puncak-control bg-puncak-orange px-4">
+                    <Icon name="ticket" color="#FFFFFF" size={15} />
+                    <AppText variant="label" className="font-bold text-white">
+                      Join Events
+                    </AppText>
+                  </View>
+                </Pressable>
+              </Link>
+            ) : null}
+          </View>
+        ) : null}
+      </View>
+    </Surface>
   );
 }
 
