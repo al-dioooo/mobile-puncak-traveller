@@ -1,7 +1,7 @@
 import { Link, router, usePathname } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import type { ComponentProps, ReactNode } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { ActivityIndicator } from 'react-native';
 
@@ -319,6 +319,10 @@ export function ImagePanel({
   const [failed, setFailed] = useState(false);
   const resolved = assetUrl(imageUrl);
   const showImage = Boolean(resolved && !failed);
+
+  useEffect(() => {
+    setFailed(false);
+  }, [resolved]);
 
   return (
     <View

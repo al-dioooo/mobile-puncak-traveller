@@ -71,7 +71,7 @@ export default function CampingScreen() {
                 className="min-h-[190px] rounded-puncak-card"
                 fallbackLabel={item.category}
                 imageAlt={item.imageAlt}
-                imageUrl={item.imageUrl}>
+                imageUrl={item.imageUrl ?? item.image_url ?? item.image_path}>
                 <View className="absolute bottom-4 left-4 right-4 rounded-[18px] bg-puncak-ink/70 p-4">
                   <AppText variant="label" className="text-white">
                     {item.title}

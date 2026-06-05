@@ -20,6 +20,7 @@ export type AuthUser = {
   role: string;
   status: string;
   avatarUrl?: string | null;
+  avatar_url?: string | null;
   location?: string | null;
   crew?: string | null;
 };
@@ -63,6 +64,7 @@ export type Place = {
   lat: number;
   lng: number;
   description?: string | null;
+  image_path?: string | null;
   imageUrl?: string | null;
   image_url?: string | null;
   imageAlt?: string | null;
@@ -104,7 +106,9 @@ export type Event = {
   priceLabel: string;
   spotsRemaining: number;
   spotsLabel: string;
+  image_path?: string | null;
   imageUrl?: string | null;
+  image_url?: string | null;
   imageAlt?: string | null;
   detailHref?: string;
   bookingHref?: string;
@@ -135,7 +139,9 @@ export type GalleryItem = {
   eventId?: string | number | null;
   category: string;
   year: string;
+  image_path?: string | null;
   imageUrl?: string | null;
+  image_url?: string | null;
   imageAlt?: string | null;
 };
 

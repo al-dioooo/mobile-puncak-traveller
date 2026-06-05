@@ -45,6 +45,7 @@ export default function EventDetailScreen() {
 
   const eventData = event.data;
   const availableTicket = eventData.tickets?.find((ticket) => ticket.stock > 0);
+  const imageUrl = eventData.imageUrl ?? eventData.image_url ?? eventData.image_path ?? null;
 
   async function bookEvent() {
     setBookingError(null);
@@ -76,7 +77,7 @@ export default function EventDetailScreen() {
         className="min-h-[240px] rounded-puncak-card"
         fallbackLabel={eventData.category}
         imageAlt={eventData.imageAlt}
-        imageUrl={eventData.imageUrl}
+        imageUrl={imageUrl}
       />
       <ScreenTitle
         eyebrow={eventData.category}

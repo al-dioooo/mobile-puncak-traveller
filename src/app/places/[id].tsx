@@ -36,7 +36,13 @@ export default function PlaceDetailScreen() {
     );
   }
 
-  const imageUrl = place.data.imageUrl ?? place.data.image_url ?? place.data.community?.image_url ?? null;
+  const imageUrl =
+    place.data.imageUrl ??
+    place.data.image_url ??
+    place.data.image_path ??
+    place.data.community?.image_url ??
+    place.data.community?.image_path ??
+    null;
 
   return (
     <AppScreen contentClassName="items-center px-6 pb-10 pt-6">

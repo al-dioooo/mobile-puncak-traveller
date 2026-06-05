@@ -16,6 +16,15 @@ const SEEDED_MEDIA_FALLBACKS: Record<string, string> = {
 
 export const API_BASE_URL = (process.env.EXPO_PUBLIC_API_URL?.replace(/\/$/, "") || DEFAULT_API_URL).replace(/\/$/, "");
 
+const LOCAL_MEDIA_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "0.0.0.0"]);
+const STORAGE_MEDIA_PATTERN = /^\/?(public\/)?(events|gallery|communities|avatars|places)\//;
+
+function applyApiOrigin(url: URL, api: URL) {
+  url.protocol = api.protocol;
+  url.hostname = api.hostname;
+  url.port = api.port;
+}
+
 type ApiRequestOptions = RequestInit & {
   token?: string | null;
 };
@@ -92,6 +101,28 @@ export async function apiRequest<T>(path: string, options: ApiRequestOptions = {
   }
 }
 
+function stripApiBasePath(pathname: string, apiBasePath: string) {
+  if (apiBasePath && pathname.startsWith(`${apiBasePath}/storage/`)) {
+    return pathname.replace(apiBasePath, "");
+  }
+
+  return pathname;
+}
+
+function normalizeMediaPath(pathname: string, apiBasePath: string) {
+  let normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
+
+  normalizedPath = stripApiBasePath(normalizedPath, apiBasePath);
+  normalizedPath = normalizedPath.replace(/^\/public\/storage\//, "/storage/");
+  normalizedPath = SEEDED_MEDIA_FALLBACKS[normalizedPath] ?? normalizedPath;
+
+  if (!normalizedPath.startsWith("/storage/") && STORAGE_MEDIA_PATTERN.test(normalizedPath)) {
+    normalizedPath = `/storage/${normalizedPath.replace(/^\/?public\//, "").replace(/^\//, "")}`;
+  }
+
+  return normalizedPath;
+}
+
 export function assetUrl(path?: string | null) {
   if (!path) {
     return null;
@@ -107,26 +138,36 @@ export function assetUrl(path?: string | null) {
   const apiBasePath = api.pathname.replace(/\/$/, "");
 
   if (/^https?:\/\//i.test(value)) {
-    const url = new URL(value);
-    url.pathname = url.pathname.replace(`${apiBasePath}/storage/`, "/storage/");
-    return url.toString();
+    try {
+      const url = new URL(value);
+      url.pathname = normalizeMediaPath(url.pathname, apiBasePath);
+
+      if (LOCAL_MEDIA_HOSTS.has(url.hostname) && url.pathname.startsWith("/storage/")) {
+        applyApiOrigin(url, api);
+      }
+
+      return url.toString();
+    } catch {
+      return null;
+    }
   }
 
   if (value.startsWith("//")) {
-    return `${api.protocol}${value}`;
+    try {
+      const url = new URL(`${api.protocol}${value}`);
+      url.pathname = normalizeMediaPath(url.pathname, apiBasePath);
+
+      if (LOCAL_MEDIA_HOSTS.has(url.hostname) && url.pathname.startsWith("/storage/")) {
+        applyApiOrigin(url, api);
+      }
+
+      return url.toString();
+    } catch {
+      return null;
+    }
   }
 
-  let pathname = value.startsWith("/") ? value : `/${value}`;
-
-  if (pathname.startsWith(`${apiBasePath}/storage/`)) {
-    pathname = pathname.replace(apiBasePath, "");
-  }
-
-  pathname = SEEDED_MEDIA_FALLBACKS[pathname] ?? pathname;
-
-  if (!pathname.startsWith("/storage/") && /^\/?(public\/)?(events|gallery|communities|avatars)\//.test(value)) {
-    pathname = `/storage/${value.replace(/^\/?public\//, "")}`;
-  }
+  const pathname = normalizeMediaPath(value, apiBasePath);
 
   return new URL(pathname, api.origin).toString();
 }

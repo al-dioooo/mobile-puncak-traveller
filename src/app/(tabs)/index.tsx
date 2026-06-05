@@ -47,6 +47,7 @@ export default function HomeScreen() {
 
   const upcomingEvents = events.data?.data ?? landing.data?.upcoming_events ?? [];
   const recommendedPlaces = places.data?.data ?? [];
+  const avatarUrl = user?.avatarUrl ?? user?.avatar_url ?? null;
 
   return (
     <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
@@ -55,8 +56,8 @@ export default function HomeScreen() {
           className="h-12 w-12 min-h-0 rounded-full border-2 border-puncak-orange"
           fallbackLabel={user?.name?.slice(0, 1) ?? 'P'}
           imageAlt={user?.name ?? 'Traveller'}
-          imageUrl={user?.avatarUrl}>
-          {!user?.avatarUrl ? (
+          imageUrl={avatarUrl}>
+          {!avatarUrl ? (
             <View className="absolute inset-0 items-center justify-center bg-puncak-orange-soft">
               <Icon name="person.fill" color={Colors.light.primary} size={22} />
             </View>

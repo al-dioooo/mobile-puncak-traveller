@@ -21,14 +21,28 @@ function seededIndex(seed: string) {
 }
 
 function placeImageUrl(place: Place) {
-  const directImage = place.imageUrl ?? place.image_url;
+  const directImage = place.imageUrl ?? place.image_url ?? place.image_path;
 
   if (directImage) {
     return directImage;
   }
 
+  const communityImage = place.community?.image_url ?? place.community?.image_path;
+
+  if (communityImage) {
+    return communityImage;
+  }
+
   const seed = `${place.id}-${place.name}`;
-  return SEEDED_PLACE_PLACEHOLDERS[seededIndex(seed) % SEEDED_PLACE_PLACEHOLDERS.length] ?? place.community?.image_url ?? null;
+  return SEEDED_PLACE_PLACEHOLDERS[seededIndex(seed) % SEEDED_PLACE_PLACEHOLDERS.length] ?? null;
+}
+
+function eventImageUrl(event: Event) {
+  return event.imageUrl ?? event.image_url ?? event.image_path ?? null;
+}
+
+function communityImageUrl(community: Community) {
+  return community.image_url ?? community.image_path ?? null;
 }
 
 export function EventCard({ event, compact }: { event: Event; compact?: boolean }) {
@@ -42,7 +56,7 @@ export function EventCard({ event, compact }: { event: Event; compact?: boolean 
             className="aspect-[16/10] min-h-0 rounded-[16px]"
             fallbackLabel={event.category}
             imageAlt={event.imageAlt}
-            imageUrl={event.imageUrl}>
+            imageUrl={eventImageUrl(event)}>
             <View className="absolute right-2 top-2 flex-row items-center gap-1 rounded-full bg-white/95 px-2 py-1">
               <Icon name="star.fill" color={Colors.light.primary} size={12} />
               <AppText variant="caption" className="font-bold text-puncak-ink">
@@ -145,7 +159,7 @@ export function CommunityCard({ community }: { community: Community }) {
         className="aspect-[16/9] min-h-0 rounded-[16px]"
         fallbackLabel={community.name}
         imageAlt={community.name}
-        imageUrl={community.image_url}>
+        imageUrl={communityImageUrl(community)}>
         <View className="absolute left-3 top-3 flex-row flex-wrap gap-2">
           <MetricPill icon="house.and.flag" className="bg-white/95">
             {placesCount} places
