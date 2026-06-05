@@ -4,6 +4,7 @@ import {
   AppScreen,
   AppText,
   Icon,
+  ImagePanel,
   MetricPill,
   PrimaryButton,
   StateBlock,
@@ -48,12 +49,22 @@ export default function ProfileScreen() {
     );
   }
 
+  const avatarUrl = me.data.avatarUrl ?? me.data.avatar_url ?? auth.user?.avatarUrl ?? auth.user?.avatar_url ?? null;
+
   return (
     <AppScreen contentClassName="items-center px-6 pb-28 pt-4">
       <Surface className="items-center">
-        <View className="h-24 w-24 items-center justify-center rounded-full bg-puncak-orange-soft">
-          <Icon name="person.fill" color={Colors.light.primary} size={38} />
-        </View>
+        <ImagePanel
+          className="h-24 w-24 min-h-0 rounded-full border-2 border-puncak-orange"
+          fallbackLabel={me.data.name?.slice(0, 1) ?? 'P'}
+          imageAlt={me.data.name}
+          imageUrl={avatarUrl}>
+          {!avatarUrl ? (
+            <View className="absolute inset-0 items-center justify-center bg-puncak-orange-soft">
+              <Icon name="person.fill" color={Colors.light.primary} size={38} />
+            </View>
+          ) : null}
+        </ImagePanel>
         <AppText variant="hero" className="text-center">
           {me.data.name}
         </AppText>
