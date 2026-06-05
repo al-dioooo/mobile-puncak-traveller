@@ -1,4 +1,4 @@
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 
 import {
@@ -10,10 +10,9 @@ import {
   StateBlock,
   Surface,
 } from '@/components/puncak/ui';
-import { Colors } from '@/constants/theme';
 import { useAuth } from '@/hooks/use-auth';
 import { ApiError } from '@/lib/api';
-import { Pressable, View } from '@/tw';
+import { View } from '@/tw';
 
 export default function LoginScreen() {
   const auth = useAuth();
@@ -78,26 +77,15 @@ export default function LoginScreen() {
             value={email}
             onChangeText={setEmail}
           />
-          <View className="gap-2">
-            <View className="flex-row items-center justify-between">
-              <AppText variant="label" className="px-1">
-                Password
-              </AppText>
-              <AppText variant="caption" className="font-semibold text-puncak-orange">
-                Forgot password?
-              </AppText>
-            </View>
-            <FormInput
-              label=""
-              icon="lock"
-              secureTextEntry
-              textContentType="password"
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              className="-mt-2"
-            />
-          </View>
+          <FormInput
+            label="Password"
+            icon="lock"
+            secureTextEntry
+            textContentType="password"
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+          />
 
           {error ? <StateBlock title="Sign-in failed" message={error} /> : null}
 
@@ -122,22 +110,6 @@ export default function LoginScreen() {
             Sign in with Google
           </PrimaryButton>
 
-          <View className="flex-row flex-wrap justify-center gap-1 pt-4">
-            <AppText variant="bodyMuted">Don&apos;t have an account?</AppText>
-            <Link href="/register" asChild>
-              <Pressable>
-                <AppText variant="label" className="font-bold text-puncak-teal">
-                  Register Now
-                </AppText>
-              </Pressable>
-            </Link>
-          </View>
-        </View>
-
-        <View className="mt-auto min-h-[69px] flex-row items-center justify-center gap-8 border-t border-puncak-line bg-puncak-fill">
-          {(['paperplane', 'camera', 'link'] as const).map((name) => (
-            <Icon key={name} name={name} color={Colors.light.textTertiary} size={18} />
-          ))}
         </View>
       </Surface>
     </AppScreen>

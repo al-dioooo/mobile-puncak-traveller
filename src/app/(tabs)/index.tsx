@@ -71,9 +71,6 @@ export default function HomeScreen() {
             Halo, {user?.name ?? 'Traveller'}
           </AppText>
         </View>
-        <View className="h-10 w-10 items-center justify-center rounded-full bg-puncak-fill">
-          <Icon name="bell" color={Colors.light.text} size={20} />
-        </View>
       </Surface>
 
       <Link href="/explore" asChild>
